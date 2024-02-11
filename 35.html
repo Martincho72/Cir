@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplicación Aleatoria del 35</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    input {
+        padding: 5px;
+        margin-top: 10px;
+    }
+    .correcto {
+        color: green;
+    }
+    .incorrecto {
+        color: red;
+    }
+</style>
+</head>
+<body>
+<h1>Multiplicación Aleatoria del 35</h1>
+<div id="mensaje"></div>
+<div id="multiplicacion"></div>
+<input type="text" id="respuesta" placeholder="Escribe tu respuesta">
+<button onclick="verificarRespuesta()">Comprobar</button>
+
+<script>
+var resultadoCorrecto;
+
+function generarMultiplicacion() {
+    var multiplicador = Math.floor(Math.random() * 20) + 1; // Genera un número aleatorio entre 1 y 20
+    resultadoCorrecto = 35 * multiplicador;
+    document.getElementById("multiplicacion").innerText = "35 x " + multiplicador + " = ";
+}
+
+function mostrarMensaje(mensaje, clase) {
+    document.getElementById("mensaje").innerText = mensaje;
+    document.getElementById("mensaje").className = clase;
+}
+
+function verificarRespuesta() {
+    var respuestaUsuario = parseInt(document.getElementById("respuesta").value);
+    if (respuestaUsuario === resultadoCorrecto) {
+        document.getElementById("respuesta").value = ""; // Limpiar el input
+        mostrarMensaje("¡Correcto!", "correcto");
+        generarMultiplicacion(); // Genera una nueva multiplicación después de una respuesta correcta
+    } else {
+        mostrarMensaje("¡Incorrecto!", "incorrecto");
+    }
+}
+
+window.onload = function() {
+    generarMultiplicacion();
+};
+</script>
+</body>
+</html>
