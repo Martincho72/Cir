@@ -25,8 +25,9 @@
 <h1>Multiplicación Aleatoria del 35</h1>
 <div id="mensaje"></div>
 <div id="multiplicacion"></div>
-<input type="text" id="respuesta" placeholder="Escribe tu respuesta">
-<button onclick="verificarRespuesta()">Comprobar</button>
+<input type="text" id="respuesta" inputmode="numeric" placeholder="Escribe tu respuesta" onkeypress="return soloNumeros(event)" onkeydown="if(event.keyCode==13) verificarRespuesta()">
+<button onclick="verificarRespuesta()">Comprobar</button> <br> <br>
+<button onclick="mostrarRespuesta()">Mostrar Respuesta</button>
 
 <script>
 var resultadoCorrecto;
@@ -51,6 +52,19 @@ function verificarRespuesta() {
     } else {
         mostrarMensaje("¡Incorrecto!", "incorrecto");
     }
+}
+
+function mostrarRespuesta() {
+    document.getElementById("mensaje").innerText = "La respuesta es: " + resultadoCorrecto;
+    document.getElementById("mensaje").className = "correcto";
+}
+
+function soloNumeros(event) {
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
 }
 
 window.onload = function() {
