@@ -44,7 +44,7 @@ function mostrarMensaje(mensaje, clase) {
 }
 
 function verificarRespuesta() {
-    var respuestaUsuario = parseInt(document.getElementById("respuesta").value);
+    var respuestaUsuario = parseFloat(document.getElementById("respuesta").value); // Utiliza parseFloat para capturar decimales
     if (respuestaUsuario === resultadoCorrecto) {
         document.getElementById("respuesta").value = ""; // Limpiar el input
         mostrarMensaje("¡Correcto!", "correcto");
