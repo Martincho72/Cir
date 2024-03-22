@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta Vecinos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .input-container input {
+            width: 50px;
+            margin: 0 5px;
+        }
+        .correct {
+            background-color: green;
+        }
+        .incorrect {
+            background-color: red;
+        }
+        .normal {
+            background-color: white;
+        }
+
+        .circuito{
+            height: 500px;
+            width: 1200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ruleta Vecinos</h1> 
+    <br>
+    <h3>Practicar:</h3>
+    <p id="numeroAleatorio"></p>
+    <div class="input-container">
+        <input type="text" id="vecino1">
+        <input type="text" id="vecino2">
+        <input type="text" id="vecino3">
+        <input type="text" id="vecino4">
+    </div>
+    <button onclick="verificarRespuesta()">Comprobar</button>
+    <p id="resultadoPracticar"></p>
+
+    <h3>Chuleta:</h3>
+    <p>Selecciona un número entre 0 y 36:</p>
+    <input type="number" id="numeroSeleccionado" min="0" max="36">
+    <button onclick="chuleta()">Calcular Vecinos</button>
+    <p id="resultadoChuleta"></p>
+
+    <img src="https://www.playuzu.es/especiales/blog/wp-content/uploads/2021/10/4-9.jpg" alt="Circuito_Ruleta" class="circuito">
+
+    <script>
+      function calcularVecinos(seleccionado) {
+        var secuencia = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+        var indice = secuencia.indexOf(seleccionado);
+        var vecinos = [];
+
+        // Vecinos a la izquierda
+        for (var i = 1; i <= 2; i++) {
+            var indiceIzquierda = (indice - i) < 0 ? secuencia.length + (indice - i) : indice - i;
+            vecinos.push(secuencia[indiceIzquierda]);
+        }
+
+        // Vecinos a la derecha
+        for (var j = 1; j <= 2; j++) {
+            var indiceDerecha = (indice + j) >= secuencia.length ? (indice + j) - secuencia.length : indice + j;
+            vecinos.push(secuencia[indiceDerecha]);
+        }
+
+        vecinos.sort((a, b) => a - b); // Ordenar los vecinos de menor a mayor
+        return vecinos; // Devolver los vecinos calculados
+    }
+
+    function chuleta(){
+        var seleccionado = parseInt(document.getElementById("numeroSeleccionado").value);
+        if (!isNaN(seleccionado) && (seleccionado >=0 && seleccionado <=36)) {
+            var vecinos = calcularVecinos(seleccionado);
+            document.getElementById("resultadoChuleta").textContent = "Vecinos: " + vecinos.join(', ');
+        } else {
+            document.getElementById("resultadoChuleta").textContent = "Por favor, introduce un número válido.";
+        }
+    }
+
+    function restablecerCajas(){
+        document.getElementById("vecino1").classList.remove("correct", "incorrect");
+        document.getElementById("vecino2").classList.remove("correct", "incorrect");
+        document.getElementById("vecino3").classList.remove("correct", "incorrect");
+        document.getElementById("vecino4").classList.remove("correct", "incorrect");
+        document.getElementById("vecino1").classList.add("normal");
+        document.getElementById("vecino2").classList.add("normal");
+        document.getElementById("vecino3").classList.add("normal");
+        document.getElementById("vecino4").classList.add("normal");
+        document.getElementById("vecino1").value = "";
+        document.getElementById("vecino2").value = "";
+        document.getElementById("vecino3").value = "";
+        document.getElementById("vecino4").value = "";
+    }
+
+    function marcarVecino(vec, listaVecinos, id) {
+        const elemento = document.getElementById(id);
+        if (listaVecinos.includes(vec)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function verificarRespuesta() {
+        var numeroAleatorio = parseInt(document.getElementById("numeroAleatorio").textContent.split(":")[1]);
+        var vecino1 = parseInt(document.getElementById("vecino1").value.trim());
+        var vecino2 = parseInt(document.getElementById("vecino2").value.trim());
+        var vecino3 = parseInt(document.getElementById("vecino3").value.trim());
+        var vecino4 = parseInt(document.getElementById("vecino4").value.trim());
+
+        // Calcular los vecinos del número aleatorio
+        var vecinos = calcularVecinos(numeroAleatorio);
+
+        // Ordenar la respuesta del usuario para comparación
+        var respuesta = [vecino1, vecino2, vecino3, vecino4];
+        respuesta.sort((a, b) => a - b);
+
+        // Comprobar si la respuesta es correcta
+        var esCorrecta = JSON.stringify(respuesta) === JSON.stringify(vecinos);
+
+        // Mostrar el resultado
+        var resultadoPracticar = document.getElementById("resultadoPracticar");
+        if (esCorrecta) {
+            resultadoPracticar.textContent = "¡Correcto!";
+            resultadoPracticar.style.color = "green";
+            restablecerCajas();
+            generarNumeroAleatorio();
+        } else {
+            resultadoPracticar.textContent = "¡Incorrecto!";
+            resultadoPracticar.style.color = "red";
+            // Cambiar color de las cajas de respuesta
+        if(marcarVecino(vecino1, vecinos, vecino1)){
+            document.getElementById("vecino1").classList.remove("normal", "incorrect");
+            document.getElementById("vecino1").classList.add("correct");
+        } else{
+            document.getElementById("vecino1").classList.remove("normal", "correct");
+            document.getElementById("vecino1").classList.add("incorrect");
+        }
+        if(vecino2 != vecino1 && marcarVecino(vecino2, vecinos, "vecino2")){
+            document.getElementById("vecino2").classList.remove("normal", "incorrect");
+            document.getElementById("vecino2").classList.add("correct");
+        } else{
+            document.getElementById("vecino2").classList.remove("normal", "correct");
+            document.getElementById("vecino2").classList.add("incorrect");
+        }
+        if(vecino3 != vecino1 && vecino3 != vecino2 && marcarVecino(vecino3, vecinos, "vecino3")){
+            document.getElementById("vecino3").classList.remove("normal", "incorrect");
+            document.getElementById("vecino3").classList.add("correct");
+        } else{
+            document.getElementById("vecino3").classList.remove("normal", "correct");
+            document.getElementById("vecino3").classList.add("incorrect");
+        }
+        if(vecino4 != vecino1 && vecino4 != vecino2 && vecino4 != vecino3 && marcarVecino(vecino4, vecinos, "vecino4")){
+            document.getElementById("vecino4").classList.remove("normal", "incorrect");
+            document.getElementById("vecino4").classList.add("correct");
+        } else{
+            document.getElementById("vecino4").classList.remove("normal", "correct");
+            document.getElementById("vecino4").classList.add("incorrect");
+        }
+        }
+    }
+
+
+    // Función para generar un número aleatorio y actualizar la interfaz
+    function generarNumeroAleatorio() {
+        var numeroAleatorio = Math.floor(Math.random() * 37); // Generar número aleatorio entre 0 y 36
+        document.getElementById("numeroAleatorio").textContent = "Número aleatorio: " + numeroAleatorio;
+        return numeroAleatorio;
+    }
+
+    // Generar el primer número aleatorio al cargar la página
+    window.onload = function() {
+        generarNumeroAleatorio();
+        document.getElementById("resultadoChuleta").textContent = "\uFEFF";
+    };
+    </script>
+</body>
+</html>
