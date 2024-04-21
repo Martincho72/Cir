@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multiplicación Aleatoria de 2,5</title>
+<title>Multiplicación Aleatoria de 2.5</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -22,10 +22,10 @@
 </style>
 </head>
 <body>
-<h1>Multiplicación Aleatoria del 2,5</h1>
+<h1>Multiplicación Aleatoria del 2.5</h1>
 <div id="mensaje"></div>
 <div id="multiplicacion"></div>
-<input type="text" id="respuesta" inputmode="numeric" placeholder="Escribe tu respuesta" onkeypress="return soloNumeros(event)" onkeydown="if(event.keyCode==13) verificarRespuesta()">
+<input type="text" id="respuesta" inputmode="numeric" placeholder="Escribe tu respuesta" oninput="this.value = this.value.replace(',', '.')" onkeypress="return soloNumeros(event)" onkeydown="if(event.keyCode==13) verificarRespuesta()">
 <button onclick="verificarRespuesta()">Comprobar</button> <br> <br>
 <button onclick="mostrarRespuesta()">Mostrar Respuesta</button>
 
@@ -35,7 +35,7 @@ var resultadoCorrecto;
 function generarMultiplicacion() {
     var multiplicador = Math.floor(Math.random() * 20) + 1; // Genera un número aleatorio entre 1 y 20
     resultadoCorrecto = 2.5 * multiplicador;
-    document.getElementById("multiplicacion").innerText = "2,5 x " + multiplicador + " = ";
+    document.getElementById("multiplicacion").innerText = "2.5 x " + multiplicador + " = ";
 }
 
 function mostrarMensaje(mensaje, clase) {
@@ -44,7 +44,7 @@ function mostrarMensaje(mensaje, clase) {
 }
 
 function verificarRespuesta() {
-    var respuestaUsuario = parseFloat(document.getElementById("respuesta").value); // Utiliza parseFloat para capturar decimales
+    var respuestaUsuario = parseFloat(document.getElementById("respuesta").value.replace(',', '.')); // Utiliza parseFloat para capturar decimales
     if (respuestaUsuario === resultadoCorrecto) {
         document.getElementById("respuesta").value = ""; // Limpiar el input
         mostrarMensaje("¡Correcto!", "correcto");
@@ -61,7 +61,7 @@ function mostrarRespuesta() {
 
 function soloNumeros(event) {
     var charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
         return false;
     }
     return true;
