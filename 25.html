@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplicación Aleatoria del 25</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    input {
+        padding: 5px;
+        margin-top: 10px;
+    }
+    .correcto {
+        color: green;
+    }
+    .incorrecto {
+        color: red;
+    }
+</style>
+</head>
+<body>
+<h1>Multiplicación Aleatoria del 25</h1>
+<div id="mensaje"></div>
+<div id="multiplicacion"></div>
+<input type="text" id="respuesta" inputmode="numeric" placeholder="Escribe tu respuesta" onkeypress="return soloNumeros(event)" onkeydown="if(event.keyCode==13) verificarRespuesta()">
+<button onclick="verificarRespuesta()">Comprobar</button> <br> <br>
+<button onclick="mostrarRespuesta()">Mostrar Respuesta</button>
+
+<script>
+var resultadoCorrecto;
+
+function generarMultiplicacion() {
+    var multiplicador = Math.floor(Math.random() * 20) + 1; // Genera un número aleatorio entre 1 y 20
+    resultadoCorrecto = 25 * multiplicador;
+    document.getElementById("multiplicacion").innerText = "25 x " + multiplicador + " = ";
+}
+
+function mostrarMensaje(mensaje, clase) {
+    document.getElementById("mensaje").innerText = mensaje;
+    document.getElementById("mensaje").className = clase;
+}
+
+function verificarRespuesta() {
+    var respuestaUsuario = parseInt(document.getElementById("respuesta").value);
+    if (respuestaUsuario === resultadoCorrecto) {
+        document.getElementById("respuesta").value = ""; // Limpiar el input
+        mostrarMensaje("¡Correcto!", "correcto");
+        generarMultiplicacion(); // Genera una nueva multiplicación después de una respuesta correcta
+    } else {
+        mostrarMensaje("¡Incorrecto!", "incorrecto");
+    }
+}
+
+function mostrarRespuesta() {
+    document.getElementById("mensaje").innerText = "La respuesta es: " + resultadoCorrecto;
+    document.getElementById("mensaje").className = "correcto";
+}
+
+function soloNumeros(event) {
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
+window.onload = function() {
+    generarMultiplicacion();
+};
+</script>
+</body>
+</html>
