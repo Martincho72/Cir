@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Huerfano, Tercio o Vecino del 0?</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #resultado {
+        margin-top: 20px;
+    }
+
+    p{
+        font-size: 25px;
+    }
+</style>
+</head>
+<body>
+<h1>¿Huerfano, Tercio o Vecino del 0?</h1>
+<p>Número: <span id="numeroAleatorio"></span></p>
+<button id="huerfanos">Huerfanos</button>
+<button id="tercio">Tercio</button>
+<button id="vecinos0">Vecinos del 0</button>
+<div id="resultado"></div>
+
+<script>
+    // Arrays con los números correspondientes a cada grupo
+    var huerfanos = [1, 6, 9, 14, 17, 20, 31, 34];
+    var tercio = [5, 8, 10, 11, 13, 16, 23, 24, 27, 30, 33, 36];
+    var vecinos0 = [0, 2, 3, 4, 7, 12, 15, 18, 19, 21, 22, 25, 26, 28, 29, 32, 35];
+
+    // Variable para almacenar el número aleatorio actual
+    var numeroAleatorio = getRandomInt(0, 36);
+    document.getElementById("numeroAleatorio").textContent = numeroAleatorio;
+
+    // Función para generar un número aleatorio entre min y max, excluyendo el número excluido
+    function getRandomInt(min, max, excluido) {
+        var numero = Math.floor(Math.random() * (max - min + 1)) + min;
+        while (excluido && numero === excluido) {
+            numero = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        return numero;
+    }
+
+    // Función para verificar si el número pertenece al grupo correcto
+    function verificar(numero, grupo) {
+        return grupo.includes(numero);
+    }
+
+    // Función para manejar el clic en los botones
+    function handleClick(event) {
+        var botonClicado = event.target.id;
+        var mensaje = document.getElementById("resultado");
+
+        switch (botonClicado) {
+            case "huerfanos":
+                if (verificar(numeroAleatorio, huerfanos)) {
+                    mensaje.textContent = "¡Correcto!";
+                    mensaje.style.color = "green";
+                    numeroAleatorio = getRandomInt(0, 36, numeroAleatorio);
+                    document.getElementById("numeroAleatorio").textContent = numeroAleatorio;
+                } else {
+                    mensaje.textContent = "¡Incorrecto!";
+                    mensaje.style.color = "red";
+                }
+                break;
+            case "tercio":
+                if (verificar(numeroAleatorio, tercio)) {
+                    mensaje.textContent = "¡Correcto!";
+                    mensaje.style.color = "green";
+                    numeroAleatorio = getRandomInt(0, 36, numeroAleatorio);
+                    document.getElementById("numeroAleatorio").textContent = numeroAleatorio;
+                } else {
+                    mensaje.textContent = "¡Incorrecto!";
+                    mensaje.style.color = "red";
+                }
+                break;
+            case "vecinos0":
+                if (verificar(numeroAleatorio, vecinos0)) {
+                    mensaje.textContent = "¡Correcto!";
+                    mensaje.style.color = "green";
+                    numeroAleatorio = getRandomInt(0, 36, numeroAleatorio);
+                    document.getElementById("numeroAleatorio").textContent = numeroAleatorio;
+                } else {
+                    mensaje.textContent = "¡Incorrecto!";
+                    mensaje.style.color = "red";
+                }
+                break;
+        }
+    }
+
+    // Agregar manejador de eventos a los botones
+    document.getElementById("huerfanos").addEventListener("click", handleClick);
+    document.getElementById("tercio").addEventListener("click", handleClick);
+    document.getElementById("vecinos0").addEventListener("click", handleClick);
+</script>
+</body>
+</html>
