@@ -16,3 +16,5 @@ https://martincho72.github.io/Cir/35.html
 https://martincho72.github.io/Cir/50.html
 # Vecinos
 https://martincho72.github.io/Cir/vecinos.html
+# Adivina
+https://martincho72.github.io/Cir/Adivina.html
