@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Fichas</title>
+    <style>
+        table {
+            width: 60%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        .error {
+            background-color: #ffdddd;
+        }
+        .valor-introducido {
+            text-align: right; /* Alinear a la derecha */
+            font-family: monospace; /* Fuente monoespaciada para mejor alineación */
+            letter-spacing: 0.3em;
+            font-size: 2em; /* Tamaño de fuente grande */
+            padding-right: 15px; /* Espacio extra a la derecha para mejor apariencia */
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Contador de Fichas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo de Ficha</th>
+                <th>Cantidad</th>
+                <th>Resultado</th>
+                <th>Valor Introducido</th> <!-- Nueva columna añadida -->
+            </tr>
+        </thead>
+        <tbody id="fichasTable">
+            <!-- Filas de fichas se generarán aquí -->
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">Total</td>
+                <td><input type="number" step="0.01" id="totalInput" /></td>
+                <td id="totalIntroducido" class="valor-introducido"></td> <!-- Nueva celda para el total introducido -->
+            </tr>
+        </tfoot>
+    </table>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="comprobarResultados()">Comprobar</button>
+    </div>
+
+    <script>
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        const fichas = [
+            { valor: 10000, cantidad: getRandomInt(0, 5) },
+            { valor: 500, cantidad: getRandomInt(5, 40) },
+            { valor: 100, cantidad: getRandomInt(15, 65) },
+            { valor: 50, cantidad: getRandomInt(30, 100) },
+            { valor: 25, cantidad: getRandomInt(30, 100) },
+            { valor: 10, cantidad: getRandomInt(40, 80) },
+            { valor: 5, cantidad: getRandomInt(60, 250) },
+            { valor: 2.5, cantidad: getRandomInt(60, 250) },
+            { valor: 1.25, cantidad: getRandomInt(8, 30) }
+        ];
+
+        const fichasTable = document.getElementById('fichasTable');
+
+        fichas.forEach(ficha => {
+            const row = document.createElement('tr');
+
+            const tipoCell = document.createElement('td');
+            tipoCell.textContent = `${ficha.valor}`;
+            row.appendChild(tipoCell);
+
+            const cantidadCell = document.createElement('td');
+            cantidadCell.textContent = ficha.cantidad;
+            row.appendChild(cantidadCell);
+
+            const resultadoCell = document.createElement('td');
+            const resultadoInput = document.createElement('input');
+            resultadoInput.type = 'number';
+            resultadoInput.step = '0.01'; // Permitir dos decimales
+            resultadoInput.dataset.valor = ficha.valor;
+            resultadoInput.dataset.cantidad = ficha.cantidad;
+            resultadoInput.addEventListener('input', () => actualizarValorIntroducido(resultadoInput, valorIntroducidoCell)); // Evento para actualizar el valor introducido
+            row.appendChild(resultadoCell);
+            resultadoCell.appendChild(resultadoInput);
+
+            const valorIntroducidoCell = document.createElement('td');
+            valorIntroducidoCell.classList.add('valor-introducido');
+            valorIntroducidoCell.textContent = ''; // Inicialmente vacío
+            row.appendChild(valorIntroducidoCell);
+
+            fichasTable.appendChild(row);
+        });
+
+        function actualizarValorIntroducido(input, cell) {
+            const valor = parseFloat(input.value).toFixed(2); // Asegurarse de tener dos decimales
+            const maxLength = 10; // Longitud máxima, incluyendo decimales
+            cell.textContent = isNaN(valor) ? '' : valor.padStart(maxLength, '\u00A0'); // Rellenar con espacios en blanco
+        }
+
+        function comprobarResultados() {
+            let totalCalculado = 0;
+            let errores = false;
+
+            const inputs = document.querySelectorAll('#fichasTable input');
+            inputs.forEach(input => {
+                const valor = parseFloat(input.dataset.valor);
+                const cantidad = parseFloat(input.dataset.cantidad);
+                const resultado = parseFloat(input.value);
+
+                if (resultado === valor * cantidad) {
+                    input.classList.remove('error');
+                } else {
+                    input.classList.add('error');
+                    errores = true;
+                }
+
+                totalCalculado += valor * cantidad;
+            });
+
+            const totalInput = document.getElementById('totalInput');
+            const totalIntroducido = document.getElementById('totalIntroducido');
+            totalIntroducido.textContent = parseFloat(totalInput.value).toFixed(2).padStart(10, '\u00A0'); // Mostrar el total introducido con dos decimales y alineado
+
+            if (parseFloat(totalInput.value) === totalCalculado) {
+                totalInput.classList.remove('error');
+            } else {
+                totalInput.classList.add('error');
+                errores = true;
+            }
+
+            if (!errores) {
+                alert('¡Todos los valores son correctos!');
+            } else {
+                alert('Algunos valores son incorrectos. Por favor, verifica los campos en rojo.');
+            }
+        }
+    </script>
+</body>
+</html>
