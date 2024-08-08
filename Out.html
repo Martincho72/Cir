@@ -25,6 +25,25 @@
             font-size: 2em; /* Tamaño de fuente grande */
             padding-right: 15px; /* Espacio extra a la derecha para mejor apariencia */
         }
+        .btn {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .centered-button {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -49,10 +68,14 @@
             </tr>
         </tfoot>
     </table>
+    
     <div style="text-align: center; margin-top: 20px;">
         <button onclick="comprobarResultados()">Comprobar</button>
     </div>
 
+    <div class="centered-button">
+        <button class="btn" onclick="window.location.href='https://martincho72.github.io/Cir/index.html'">Volver a la Página de Inicio</button>
+    </div>
     <script>
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
