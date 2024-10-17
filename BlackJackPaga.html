@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlackJack Paga</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    input {
+        padding: 5px;
+        margin-top: 10px;
+    }
+    .correcto {
+        color: green;
+    }
+    .incorrecto {
+        color: red;
+    }
+    .btn {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+</style>
+</head>
+<body>
+<h1>BlackJack paga 3:2</h1>
+<div id="mensaje"></div>
+<div id="multiplicacion"></div>
+<input type="text" id="respuesta" inputmode="numeric" placeholder="Escribe tu respuesta" oninput="this.value = this.value.replace(',', '.')" onkeypress="return soloNumeros(event)" onkeydown="if(event.keyCode==13) verificarRespuesta()">
+<button onclick="verificarRespuesta()">Comprobar</button> <br> <br>
+<button onclick="mostrarRespuesta()">Mostrar Respuesta</button>
+<br> <br>
+<button class="btn" onclick="window.location.href='https://martincho72.github.io/Cir/index.html'">Volver a la Página de Inicio</button>
+
+<script>
+var resultadoCorrecto;
+
+function generarMultiplicacion() {
+    var multiplicador = Math.floor(Math.random() * 51) * 10; 
+    resultadoCorrecto = 1.5 * multiplicador;
+    document.getElementById("multiplicacion").innerText = "BlackJack de " + multiplicador + " paga: ";
+}
+
+function mostrarMensaje(mensaje, clase) {
+    document.getElementById("mensaje").innerText = mensaje;
+    document.getElementById("mensaje").className = clase;
+}
+
+function verificarRespuesta() {
+    var respuestaUsuario = parseFloat(document.getElementById("respuesta").value.replace(',', '.')); // Utiliza parseFloat para capturar decimales
+    if (respuestaUsuario === resultadoCorrecto) {
+        document.getElementById("respuesta").value = ""; // Limpiar el input
+        mostrarMensaje("¡Correcto!", "correcto");
+        generarMultiplicacion(); // Genera una nueva multiplicación después de una respuesta correcta
+    } else {
+        mostrarMensaje("¡Incorrecto!", "incorrecto");
+    }
+}
+
+function mostrarRespuesta() {
+    document.getElementById("mensaje").innerText = "La respuesta es: " + resultadoCorrecto;
+    document.getElementById("mensaje").className = "correcto";
+}
+
+function soloNumeros(event) {
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode !== 46 && charCode !== 44 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
+window.onload = function() {
+    generarMultiplicacion();
+};
+</script>
+</body>
+</html>
